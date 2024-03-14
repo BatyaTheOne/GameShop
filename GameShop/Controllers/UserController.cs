@@ -12,14 +12,16 @@ namespace GameShop.Controllers
     public class UserController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
+        private readonly IAccountReplenishmentService _accountReplenishment;
 
         public static bool IsActive = false;
 
-        public UserController(AppDbContext appDbContext, UserService userService)
+        public UserController(AppDbContext appDbContext, IUserService userService, IAccountReplenishmentService accountReplenishment)
         {
              _context = appDbContext;
              _userService = userService;
+            _accountReplenishment = accountReplenishment;
         }
 
         [HttpGet("Authorization")]
@@ -50,18 +52,7 @@ namespace GameShop.Controllers
         [HttpPost("AccountReplenishment")]
         public async Task<ActionResult> AccountReplenishment(double money, int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-
-            if (user == null)
-            {
-                throw new Exception("Человек c такой Id нету");
-            }
-
-            user.Score += money;
-
-            await _context.Users.Where(x => x.Id == userId).ExecuteUpdateAsync(x => 
-                            x.SetProperty(u => u.Score, u => user.Score));
-
+            await _accountReplenishment.AddMoneyToScore(money, userId);
             return Ok();
         }
     }

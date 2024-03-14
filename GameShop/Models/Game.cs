@@ -13,5 +13,6 @@ namespace GameShop.Models
         public string GameTypeName { get { return Type.ToString(); } }
         public int LibraryId { get; set; }
         public Library Library { get; set; }
+        public int MinimumLimitAge { get; set; }
     }
 }

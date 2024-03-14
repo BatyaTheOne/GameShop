@@ -22,15 +22,13 @@ namespace GameShop.Services
 
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == UserID);
 
-
+            if (user.Age <= game.MinimumLimitAge)
+                throw new Exception($"У игры возростное ограничение {game.MinimumLimitAge}") ;
+            
             if (user.Score >= game.Price)
-            {
                 user.Score -= game.Price;
-            }
             else
-            {
                 throw new Exception("У вас не хватает денег иди работай");
-            }
 
             if (game == null || user == null)
                 throw new Exception("Такой игры нет в наличии или у вас не хватает денег");

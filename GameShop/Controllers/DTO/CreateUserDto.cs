@@ -1,4 +1,6 @@
-﻿namespace GameShop.Controllers.DTO
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace GameShop.Controllers.DTO
 {
     public record CreateUserDto
     {

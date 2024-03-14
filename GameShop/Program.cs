@@ -29,6 +29,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IBuyService, BuyService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAccountReplenishmentService, AccountReplenishmentService>();
 
 var app = builder.Build();
 

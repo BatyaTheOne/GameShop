@@ -9,5 +9,6 @@ namespace GameShop.DTO
         public double Price { get; set; }
         public string? Description { get; set; }
         public GameTypeEnum Type { get; set; }
+        public int AgeLimit { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace GameShop.Models
 
                 return age;
             }
+            set => Age = value;
         }
         public string Loggin { get ; set; }
         public string Password { get; set; }

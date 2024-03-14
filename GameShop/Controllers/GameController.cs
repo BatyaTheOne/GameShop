@@ -6,56 +6,98 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameShop.Controllers
 {
-    [ApiController]
+//    {
+//  "firstName": "Бектур",
+//  "lastName": "Токтобеков",
+//  "loggin": "Bektur",
+//  "password": "00000000",
+//  "dateOfBirth": "2024-03-14T13:32:22.708Z"
+//}
+[ApiController]
     [Route("api-games")]
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
-        public GameController(IGameService gameService) 
-        { 
+        public GameController(IGameService gameService)
+        {
             _gameService = gameService;
         }
 
         [HttpGet("game")]
         public async Task<ActionResult> GetGame(int Id)
         {
-            var game = await _gameService.Get(Id);
-
-            if (game == null)
+            if (UserController.IsActive == true)
             {
-                return BadRequest();
-            }
+                var game = await _gameService.Get(Id);
 
-            return Ok(game);
+                if (game == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(game);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult> GetGames()
         {
-            var games = await _gameService.GatAll();
-            return Ok(games);
+            if (UserController.IsActive == true)
+            {
+                var games = await _gameService.GatAll();
+                return Ok(games);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostGame(GameDto game) 
+        public async Task<ActionResult> PostGame(GameDto game)
         {
-            await _gameService.Add(game);
-            return Ok();
-            ///asd
+            if (UserController.IsActive == true)
+            {
+                await _gameService.Add(game);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteGame(int Id)
         {
-            await _gameService.Delete(Id);
-            return NoContent();
+            if (UserController.IsActive == true)
+            {
+                await _gameService.Delete(Id);
+                return NoContent();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
         }
 
         [HttpPut]
         public async Task<ActionResult> UpdateGame(GameUpdateDto gameDto)
         {
-            await _gameService.Update(gameDto);
-            return NoContent();
+            if (UserController.IsActive == true)
+            {
+                await _gameService.Update(gameDto);
+                return NoContent();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
     }

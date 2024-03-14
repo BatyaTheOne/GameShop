@@ -32,6 +32,7 @@ namespace GameShop.Services
                 Description = gamedto.Description,
                 Type = gamedto.Type,
                 GameTypeId = ((int)gamedto.Type),
+                MinimumLimitAge = gamedto.AgeLimit,
                 LibraryId = 1
 
             };

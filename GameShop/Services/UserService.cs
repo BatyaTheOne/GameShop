@@ -19,7 +19,7 @@ namespace GameShop.Services
             {
                 Loggin = userDto.Loggin,
                 Password = userDto.Password,
-                DateOfBirth = userDto.DateOfBirth,
+                DateOfBirth = userDto.DateOfBirth.Date,
                 LastName = userDto.LastName,
                 FirstName = userDto.FirstName
             };
