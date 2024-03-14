@@ -1,4 +1,6 @@
-﻿using GameShop.Models;
+﻿using GameShop.Controllers.DTO;
+using GameShop.Models;
+using GameShop.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -10,18 +12,20 @@ namespace GameShop.Controllers
     public class UserController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly UserService _userService;
 
         public static bool IsActive = false;
 
-        public UserController(AppDbContext appDbContext)
+        public UserController(AppDbContext appDbContext, UserService userService)
         {
              _context = appDbContext;
+             _userService = userService;
         }
 
         [HttpGet("Authorization")]
         public async Task<ActionResult> Authorization(string loggin, string password)
         {
-            if (_context.Users.Any(x => x.Logging == loggin && x.Password == password) == true)
+            if (_context.Users.Any(x => x.Loggin == loggin && x.Password == password) == true)
             {
                 IsActive= true;
             }
@@ -30,17 +34,19 @@ namespace GameShop.Controllers
         }
 
         [HttpPost("Registration")]
-        public async Task<ActionResult> Registration(string loggin, string password)
+        public async Task<ActionResult> Registration(CreateUserDto userDto)
         {
-            var user = new User
-            {
-                Logging = loggin,
-                Password = password
-            };
-            await _context.Users.AddAsync(user);
-            return Ok( await _context.SaveChangesAsync());
+            await _userService.Create(userDto);
+            return Ok();
         }
 
+        /// <summary>
+        /// Пополнение счета
+        /// </summary>
+        /// <param name="money"> деньги</param>
+        /// <param name="userId">ID пользовалтеля</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         [HttpPost("AccountReplenishment")]
         public async Task<ActionResult> AccountReplenishment(double money, int userId)
         {
