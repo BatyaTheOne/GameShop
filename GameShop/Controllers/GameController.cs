@@ -43,7 +43,7 @@ namespace GameShop.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("Games")]
         public async Task<ActionResult> GetGames()
         {
             if (UserController.IsActive == true)

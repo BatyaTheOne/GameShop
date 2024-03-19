@@ -34,13 +34,10 @@ namespace GameShop.Services
                 GameTypeId = ((int)gamedto.Type),
                 MinimumLimitAge = gamedto.AgeLimit,
                 LibraryId = 1
-
             };
                 
             await _db.Games.AddAsync(game);
             await _db.SaveChangesAsync();
-
-            var geme2 = game;
         }
 
         public async Task Delete(int Id)

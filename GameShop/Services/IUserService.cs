@@ -1,4 +1,4 @@
-﻿using GameShop.Controllers.DTO;
+﻿using GameShop.DTO;
 
 namespace GameShop.Services
 {

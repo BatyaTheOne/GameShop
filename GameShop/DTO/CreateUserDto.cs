@@ -1,6 +1,6 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace GameShop.Controllers.DTO
+namespace GameShop.DTO
 {
     public record CreateUserDto
     {
