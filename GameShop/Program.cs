@@ -1,14 +1,13 @@
 using GameShop.Services;
 using GameShop;
 using Microsoft.EntityFrameworkCore;
+using GameShop.Mappers;
+using GameShop.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-
-
 
 builder.Services.AddControllers();
 
@@ -32,9 +31,10 @@ builder.Services.AddScoped<IBuyService, BuyService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountReplenishmentService, AccountReplenishmentService>();
 
+builder.Services.AddAutoMapper(typeof(AppMappersProfile));
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -44,9 +44,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
-// Use CORS configuration
 app.UseCors("AllowAllOrigins");
+
+app.UseStaticFiles();
 
 app.MapControllers();
 

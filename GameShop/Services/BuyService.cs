@@ -22,6 +22,9 @@ namespace GameShop.Services
 
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == UserID);
 
+            if (game == null || user == null)
+                throw new Exception("Такой игры нет в наличии");
+
             if (user.Age <= game.MinimumLimitAge)
                 throw new Exception($"У игры возростное ограничение {game.MinimumLimitAge}") ;
             
@@ -30,8 +33,6 @@ namespace GameShop.Services
             else
                 throw new Exception("У вас не хватает денег иди работай");
 
-            if (game == null || user == null)
-                throw new Exception("Такой игры нет в наличии или у вас не хватает денег");
 
             if (await _db.UserGames.AnyAsync( x => x.UserId == UserID && x.GameId == GameId))
             {

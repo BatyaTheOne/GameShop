@@ -16,20 +16,26 @@ namespace GameShop.Controllers
         private readonly IAccountReplenishmentService _accountReplenishment;
 
         public static bool IsActive = false;
+        public static bool IsAdmin = false;
 
         public UserController(AppDbContext appDbContext, IUserService userService, IAccountReplenishmentService accountReplenishment)
         {
-             _context = appDbContext;
-             _userService = userService;
+            _context = appDbContext;
+            _userService = userService;
             _accountReplenishment = accountReplenishment;
         }
 
         [HttpGet("Authorization")]
         public async Task<ActionResult> Authorization(string loggin, string password)
         {
-            if (_context.Users.Any(x => x.Loggin == loggin && x.Password == password) == true)
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Loggin == loggin && x.Password == password);
+            if (user != null)
             {
-                IsActive= true;
+                if (user.IsAdmin == true)
+                {
+                    IsAdmin = true;
+                }
+                IsActive = true;
             }
 
             return Ok();
@@ -54,6 +60,15 @@ namespace GameShop.Controllers
         {
             await _accountReplenishment.AddMoneyToScore(money, userId);
             return Ok();
+        }
+
+        [HttpGet("Logout")]
+        public async Task<ActionResult> Logout()
+        {
+            IsAdmin = false;
+            IsActive = false;
+
+            return NoContent();
         }
     }
 

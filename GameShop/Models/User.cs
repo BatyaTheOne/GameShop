@@ -14,6 +14,8 @@ namespace GameShop.Models
         public string Password { get; set; }
         public double? Score { get; set; } = 0;
 
+        public bool IsAdmin { get; set; }
+
         private int CalculateAge()
         {
             DateTime today = DateTime.Today;

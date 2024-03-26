@@ -60,7 +60,7 @@ namespace GameShop.Controllers
         [HttpPost]
         public async Task<ActionResult> PostGame(GameDto game)
         {
-            if (UserController.IsActive == true)
+            if (UserController.IsActive == true && UserController.IsAdmin == true)
             {
                 await _gameService.Add(game);
                 return Ok();
@@ -74,7 +74,7 @@ namespace GameShop.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteGame(int Id)
         {
-            if (UserController.IsActive == true)
+            if (UserController.IsActive == true && UserController.IsAdmin == true)
             {
                 await _gameService.Delete(Id);
                 return NoContent();
@@ -89,7 +89,7 @@ namespace GameShop.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateGame(GameUpdateDto gameDto)
         {
-            if (UserController.IsActive == true)
+            if (UserController.IsActive == true && UserController.IsAdmin == true)
             {
                 await _gameService.Update(gameDto);
                 return NoContent();

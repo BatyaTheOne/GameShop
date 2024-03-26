@@ -1,4 +1,6 @@
-﻿using GameShop.DTO;
+﻿using AutoMapper;
+using GameShop.DTO;
+using GameShop.Mappers;
 using GameShop.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,10 +8,12 @@ namespace GameShop.Services
 {
     public class GameService : IGameService
     {
+        private readonly IMapper _mapper;
         private readonly AppDbContext _db;
-        public GameService(AppDbContext appDbContext)
+        public GameService(AppDbContext appDbContext, IMapper appMapperProfile)
         {
             _db = appDbContext;
+            _mapper = appMapperProfile;
         }
 
         public async Task<Game> Get(int id)
@@ -25,16 +29,18 @@ namespace GameShop.Services
 
         public async Task Add(GameDto gamedto)
         {
-            var game = new Game()
+            var game1 = new Game()
             {
                 Name = gamedto.Name,
                 Price = gamedto.Price,
                 Description = gamedto.Description,
                 Type = gamedto.Type,
-                GameTypeId = ((int)gamedto.Type),
+                GameTypeId = (int)gamedto.Type,
                 MinimumLimitAge = gamedto.AgeLimit,
                 LibraryId = 1
             };
+
+            var game = _mapper.Map<Game>(gamedto);
                 
             await _db.Games.AddAsync(game);
             await _db.SaveChangesAsync();
